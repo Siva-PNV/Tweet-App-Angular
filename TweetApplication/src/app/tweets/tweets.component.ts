@@ -8,24 +8,31 @@ import { AllTweets } from '../model/tweets-model';
   templateUrl: './tweets.component.html',
   styleUrls: ['./tweets.component.css'],
 })
-export class TweetsComponent implements OnInit, AfterViewInit {
-  allTweets: AllTweets;
-  constructor(private http: HttpClient, private router: Router) {}
+export class TweetsComponent implements OnInit {
+  submitted = false;
+  allTweets: any = [];
+  displayNoData: string;
 
-  ngOnInit() {}
+  constructor(private http: HttpClient) {}
 
-  ngAfterViewInit() {
+  ngOnInit(): void {
+    this.getAllTweets();
+    // this.addForm = this.fb.group({
+    //     comments: ['', Validators.required],
+    // });
+  }
+
+  getAllTweets() {
     this.http
       .get('http://localhost:8080/api/v1.0/tweets/all')
-      .subscribe((data: any) => {
+      .subscribe((data) => {
         this.allTweets = data;
+        console.log(this.allTweets);
+        if (this.allTweets.length > 0) {
+          this.displayNoData = 'true';
+        } else {
+          this.displayNoData = 'false';
+        }
       });
   }
-  // getAllTweets() {
-  //   this.http
-  //     .get('http://localhost:8080/api/v1.0/tweets/all')
-  //     .subscribe((data: any) => {
-  //       this.allTweets = data;
-  //     });
-  // }
 }
