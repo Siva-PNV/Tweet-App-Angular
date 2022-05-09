@@ -10,6 +10,9 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TweetsComponent } from './tweets/tweets.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { MyTweetsComponent } from './my-tweets/my-tweets.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +22,9 @@ import { TweetsComponent } from './tweets/tweets.component';
     HomeComponent,
     NavBarComponent,
     TweetsComponent,
+    UserDashboardComponent,
+    ForgotPasswordComponent,
+    MyTweetsComponent,
   ],
   imports: [
     BrowserModule,
