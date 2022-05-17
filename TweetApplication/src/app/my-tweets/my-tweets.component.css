@@ -8,3 +8,11 @@
 .viewcomments {
   color: black;
 }
+
+#displaytag {
+  align-content: center;
+  color: rgb(21, 44, 44);
+  margin-left: 35%;
+  margin-top: 10%;
+  size: 15%;
+}

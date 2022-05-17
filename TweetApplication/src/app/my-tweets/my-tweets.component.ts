@@ -26,8 +26,9 @@ export class MyTweetsComponent implements OnInit {
     });
 
     const username =
-      localStorage.getItem('loginId') == null ? '' : 'abc@gmail.com';
-    console.log('user name ' + username);
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
     if (username != null) {
       this.getTweetsByUserName(username);
     }
@@ -52,7 +53,9 @@ export class MyTweetsComponent implements OnInit {
 
   addComments(tweetId: string) {
     const loginId =
-      localStorage.getItem('loginId') == null ? '' : 'abc@gmail.com';
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
 
     this.submitted = true;
     console.log(this.addForm.invalid);
@@ -61,12 +64,11 @@ export class MyTweetsComponent implements OnInit {
     }
 
     const userComment = {
-      username: loginId,
       comment: this.addForm.value.comments,
     };
     if (loginId) {
       this.loginService
-        .addComment(userComment, loginId, tweetId)
+        .addComment(loginId, tweetId, userComment)
         .subscribe((data) => {
           console.log(data);
         });

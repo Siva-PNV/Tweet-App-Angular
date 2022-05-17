@@ -13,6 +13,11 @@ import { TweetsComponent } from './tweets/tweets.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { MyTweetsComponent } from './my-tweets/my-tweets.component';
+import { AllUsersComponent } from './all-users/all-users.component';
+import { UserSearchComponent } from './user-search/user-search.component';
+import { AddTweetComponent } from './add-tweet/add-tweet.component';
+import { TweetCommentsLikesComponent } from './tweet-comments-likes/tweet-comments-likes.component';
+import { UserTweetComponent } from './user-tweet/user-tweet.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +30,11 @@ import { MyTweetsComponent } from './my-tweets/my-tweets.component';
     UserDashboardComponent,
     ForgotPasswordComponent,
     MyTweetsComponent,
+    AllUsersComponent,
+    UserSearchComponent,
+    AddTweetComponent,
+    TweetCommentsLikesComponent,
+    UserTweetComponent,
   ],
   imports: [
     BrowserModule,

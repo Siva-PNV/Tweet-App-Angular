@@ -1,9 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { LoginCredentials } from '../model/LoginCredentials';
 import { LoginService } from '../services/login/login-service.service';
 
 @Component({
@@ -18,7 +15,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private http: HttpClient,
     private loginService: LoginService
   ) {}
 
@@ -44,9 +40,7 @@ export class LoginComponent implements OnInit {
     }
     this.loginService.checkUserCredentials(this.UserLogin.value).subscribe(
       (data) => {
-        // console.log('length ' + Object.keys(data).length);
-        // if (Object.keys(data).length) {
-        this.loginService.storeUserData(data.username, data.firstName);
+        this.loginService.storeUserData(data.loginId, data.firstName);
         this.router.navigateByUrl('/home');
         // }
       },

@@ -20,21 +20,16 @@
       </p>
 
       <div class="d-flex">
-        <a
-          class="viewcomments"
-          [routerLink]="['/user-dashboard/tweet', i.tweetId]"
-        >
+        <a class="viewcomments" [routerLink]="['/tweet', i.tweetId]">
           <i class="far fa-thumbs-up"></i>
         </a>
-        {{ i.likesCount }}
+        {{ i.likes.length }}
 
         <div class="ml-auto">
-          <a
-            class="viewcomments"
-            [routerLink]="['/user-dashboard/tweet', i.tweetId]"
+          <a class="viewcomments" [routerLink]="['/tweet', i.tweetId]"
             ><i class="far fa-comment"></i
           ></a>
-          {{ i.commentsCount }}
+          {{ i.comments.length }}
         </div>
       </div>
     </div>

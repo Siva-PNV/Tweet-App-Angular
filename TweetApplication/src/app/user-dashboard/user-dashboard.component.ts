@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoginService } from '../services/login/login-service.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -9,15 +12,25 @@ import { Component, OnInit } from '@angular/core';
 export class UserDashboardComponent implements OnInit {
   userName: string;
   lastTweet: any;
-
+  //comment: FormGroup;
   UserName: String = 'Welcome, ';
-
-  constructor(private http: HttpClient) {}
+  user: any;
+  comment: string;
+  searchUser: string;
+  constructor(
+    private http: HttpClient,
+    private loginService: LoginService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getLatestTweet();
 
     this.getWelcomeUserName();
+    // this.comment = this.fb.group({
+    //   comment: ['', [Validators.required]],
+    // });
   }
 
   getWelcomeUserName() {
@@ -40,5 +53,51 @@ export class UserDashboardComponent implements OnInit {
       .subscribe((data) => {
         this.lastTweet = data;
       });
+
+    const loginId =
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
+    if (loginId != null) {
+      this.loginService.getUserByUserName(loginId).subscribe((data) => {
+        this.user = data;
+      });
+    }
+  }
+  likeTweet(tweetId: string) {
+    const loginId =
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
+    if (loginId != null) {
+      this.loginService.addLike(loginId, tweetId).subscribe();
+      this.getLatestTweet();
+    }
+  }
+
+  reply(tweetId: string) {
+    console.log('comme ' + this.comment);
+    const loginId =
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
+    if (loginId != null) {
+      this.loginService.addComment(loginId, tweetId, this.comment).subscribe(
+        (data) => {
+          console.log(data);
+        },
+        (err) => {
+          alert(err.message);
+        }
+      );
+      this.getLatestTweet();
+    }
+  }
+
+  search() {
+    this.loginService.getUserByUserName(this.searchUser).subscribe((data) => {
+      console.log(data);
+      this.router.navigate(['/search', this.searchUser]);
+    });
   }
 }

@@ -1,0 +1,31 @@
+<div class="card" *ngFor="let i of othersTweets" style="margin: 20px">
+  <div class="card-header">
+    <div class="d-flex">
+      <h5>{{ i.firstName | titlecase }} {{ i.lastName | titlecase }}</h5>
+      <div class="ml-auto">
+        {{ i.tweetDate | date: "medium" }}
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ i.tweetTag }}</h5>
+    <p class="card-text">
+      <i class="fas fa-2x fa-quote-left"></i> &nbsp; {{ i.tweetText }}
+    </p>
+
+    <div class="d-flex">
+      <a class="viewcomments" [routerLink]="['/tweet', i.tweetId]">
+        <i class="far fa-thumbs-up"></i>
+      </a>
+      {{ i.likesCount }}
+
+      <div class="ml-auto">
+        <a class="viewcomments" [routerLink]="['/tweet', i.tweetId]"
+          ><i class="far fa-comment"></i
+        ></a>
+        {{ i.commentsCount }}
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="othersTweets.length < 1">no tweets</div>

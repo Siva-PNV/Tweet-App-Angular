@@ -1,95 +1,101 @@
-<section class="mysection">
-  <aside class="left">
-    <div class="container">
-      <ul class="list-group text-center">
-        <!-- <li class="list-group-item headerlist text-left">
-                    <i class="fas fa-2x fa-home"></i>
-                    <a class="mx-1" routerLink="">Home</a>
-                </li> -->
-        <li class="list-group-item headerlist text-left">
-          <i class="fab fa-2x fa-twitter"></i>
-          <a class="mx-1" class="my-tweets" routerLink="/my-tweets"
-            >My Tweets</a
-          >
-        </li>
-        <li class="list-group-item headerlist text-left">
-          <i class="fab fa-2x fa-twitter-square"></i>
-          <a class="mx-1" routerLink="/all-tweets">All Tweets</a>
-        </li>
-        <li class="list-group-item headerlist text-left">
-          <i class="fas fa-2x fa-users"></i>
-          <a class="mx-1" routerLink="/user-dashboard/all-users">All Users</a>
-        </li>
-        <li class="list-group-item headerlist text-left">
-          <i class="fas fa-2x fa-user-alt"></i>
-          <a class="mx-1" routerLink="/user-dashboard/my-profile">My Profile</a>
-        </li>
-        <li class="list-group-item headerlist text-left">
-          <!-- <i class="fas fa-2x fa-edit"></i> -->
-          <!-- <a class="mx-1" routerLink="/user-dashboard/add-tweet">Add Tweet</a> -->
-          <button
-            type="button"
-            class="btn btn-primary"
-            routerLink="/user-dashboard/add-tweet"
-          >
-            Tweet
-          </button>
-        </li>
-      </ul>
-    </div>
-  </aside>
-  <aside class="right">
-    <div classs="container">
-      <div class="text-center h6 my-2">
-        {{ UserName }}
-      </div>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="mobile-web-app-capable" content="yes" />
 
-      <div class="searchBox">
-        <input
-          type="text"
-          [(ngModel)]="userName"
-          name="userName"
-          placeholder="Search By UserName.."
-        />
-        &nbsp;
-        <a [routerLink]="['/user-dashboard/search', userName]"
-          ><i class="fas fa-search"></i
-        ></a>
-      </div>
-      <div class="d-flex">
-        <p class="mx-2 h3">Latest Tweet</p>
-        <div class="ml-auto my-1">
-          <a class="nav-link d-inline" (click)="getLastUpdatedTweet()"
-            ><i class="fas fa-redo-alt"></i
-          ></a>
+<div class="input-group" style="margin: 2% 35% 0% 35%">
+  <input
+    type="search"
+    class="form-control rounded"
+    placeholder="Search"
+    aria-label="Search"
+    aria-describedby="search-addon"
+    name="searchUser"
+    [(ngModel)]="searchUser"
+  />
+  <button
+    type="button"
+    class="btn btn-outline-primary"
+    style="
+      margin-right: 70%;
+      padding-right: 10px;
+      width: 5%;
+      border-radius: 15px;
+    "
+    (click)="search()"
+  >
+    search
+  </button>
+</div>
+<div *ngFor="let tweet of lastTweet">
+  <div id="page">
+    <div id="tweet">
+      <div class="tweet-container pt pb pr pl">
+        <div class="user pr">
+          <!-- <img src="{{ user?.imageUrl }}" /> -->
+          <div class="username">
+            <div class="name">{{ tweet.username }}</div>
+            <div class="handle">@{{ tweet.username }}</div>
+          </div>
+          <div class="date pt pb">
+            {{ tweet.tweetDate | date: "medium" }}
+          </div>
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+        <div class="tweet-content pt">
+          {{ tweet.tweetText }}
         </div>
       </div>
-
-      <div
-        class="card mx-3"
-        *ngIf="lastTweet"
-        style="width: 13rem; margin-left: 6px; margin-top: 10px"
-      >
-        <div class="card-header">
-          <h5>
-            {{ lastTweet.firstName | titlecase }}
-            {{ lastTweet.lastName | titlecase }}
-          </h5>
-          <div>
-            {{ lastTweet.tweetDate | date: "medium" }}
+      <div class="icons">
+        <div class="ico">
+          <div
+            (click)="likeTweet(tweet.tweetId)"
+            class="far fa-thumbs-up number"
+          >
+            {{ tweet.likes.length }}
           </div>
         </div>
-        <div class="card-body">
-          <h5 class="card-title">{{ lastTweet.tweetText }}</h5>
-          <p class="card-text" *ngFor="let com of lastTweet.comments">
-            {{ com.comment }}
-          </p>
+        <div class="ico">
+          <div class="far fa-comment number">{{ tweet.comments.length }}</div>
         </div>
       </div>
     </div>
-  </aside>
-
-  <div class="middle-content custom-scrollbar">
-    <router-outlet></router-outlet>
+    <div class="wrap pt">
+      <div class="box">
+        <div *ngIf="tweet.comments.length > 0">
+          <div class="content" *ngFor="let comment of tweet.comments">
+            <div class="line">
+              <div class="border"></div>
+              <!-- <img
+                class="avatar"
+                src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
+              /> -->
+            </div>
+            <div class="info" style="padding-left: 8%">
+              <div class="userinfo sl">
+                <div class="name">{{ comment.username }}</div>
+                <div class="handle">@{{ comment.username }}</div>
+              </div>
+              <i class="material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="replyto sl" style="padding-left: 10%">
+              Replying to <a>{{ tweet.username }}</a>
+            </div>
+            <div class="subtweet-content sl">
+              {{ comment.comment }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="padding-left: 15%; padding-top: 5%">
+        <!-- <form [formGroup]="comment" (submit)="reply(tweet.tweetId)"> -->
+        <input
+          type="text"
+          class="form-control"
+          name="comment"
+          [(ngModel)]="comment"
+        />
+        <button (click)="reply(tweet.tweetId)">Reply</button>
+        <!-- </form> -->
+      </div>
+    </div>
   </div>
-</section>
+</div>
