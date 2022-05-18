@@ -12,11 +12,13 @@ import { LoginService } from '../services/login/login-service.service';
 export class UserDashboardComponent implements OnInit {
   userName: string;
   lastTweet: any;
-  //comment: FormGroup;
-  UserName: String = 'Welcome, ';
+  tweetCreate: FormGroup;
   user: any;
   comment: string;
   searchUser: string;
+  name: string;
+  tweetText: string;
+  showForm: boolean = false;
   constructor(
     private http: HttpClient,
     private loginService: LoginService,
@@ -28,9 +30,9 @@ export class UserDashboardComponent implements OnInit {
     this.getLatestTweet();
 
     this.getWelcomeUserName();
-    // this.comment = this.fb.group({
-    //   comment: ['', [Validators.required]],
-    // });
+    this.tweetCreate = this.fb.group({
+      tweetText: ['', [Validators.required]],
+    });
   }
 
   getWelcomeUserName() {
@@ -39,7 +41,7 @@ export class UserDashboardComponent implements OnInit {
         ? ''
         : localStorage.getItem('firstName');
     if (fullName != null) {
-      this.UserName += fullName.toLocaleUpperCase();
+      this.userName = fullName;
     }
   }
 
@@ -51,6 +53,7 @@ export class UserDashboardComponent implements OnInit {
     this.http
       .get('http://localhost:8080/api/v1.0/tweets/all')
       .subscribe((data) => {
+        console.log(data);
         this.lastTweet = data;
       });
 
@@ -76,7 +79,6 @@ export class UserDashboardComponent implements OnInit {
   }
 
   reply(tweetId: string) {
-    console.log('comme ' + this.comment);
     const loginId =
       localStorage.getItem('loginId') == null
         ? ''
@@ -99,5 +101,19 @@ export class UserDashboardComponent implements OnInit {
       console.log(data);
       this.router.navigate(['/search', this.searchUser]);
     });
+  }
+
+  showTweetForm() {
+    this.showForm = true;
+  }
+
+  addTweet() {
+    const loginId =
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
+    if (loginId != null) {
+      this.loginService.createTweet(loginId, this.tweetCreate.value);
+    }
   }
 }

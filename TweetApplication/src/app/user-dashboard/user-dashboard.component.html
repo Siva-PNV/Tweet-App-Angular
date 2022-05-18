@@ -1,100 +1,159 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="mobile-web-app-capable" content="yes" />
-
-<div class="input-group" style="margin: 2% 35% 0% 35%">
-  <input
-    type="search"
-    class="form-control rounded"
-    placeholder="Search"
-    aria-label="Search"
-    aria-describedby="search-addon"
-    name="searchUser"
-    [(ngModel)]="searchUser"
-  />
-  <button
-    type="button"
-    class="btn btn-outline-primary"
-    style="
-      margin-right: 70%;
-      padding-right: 10px;
-      width: 5%;
-      border-radius: 15px;
-    "
-    (click)="search()"
-  >
-    search
-  </button>
-</div>
-<div *ngFor="let tweet of lastTweet">
-  <div id="page">
-    <div id="tweet">
-      <div class="tweet-container pt pb pr pl">
-        <div class="user pr">
-          <!-- <img src="{{ user?.imageUrl }}" /> -->
-          <div class="username">
-            <div class="name">{{ tweet.username }}</div>
-            <div class="handle">@{{ tweet.username }}</div>
+<div>
+  <div>
+    <div class="input-group" style="margin: 2% 35% 0% 35%">
+      <input
+        autocomplete="off"
+        type="search"
+        class="form-control rounded"
+        placeholder="Search"
+        aria-label="Search"
+        aria-describedby="search-addon"
+        name="searchUser"
+        [(ngModel)]="searchUser"
+      />
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        style="
+          margin-right: 70%;
+          padding-right: 10px;
+          width: 4%;
+          border-color: white;
+        "
+        (click)="search()"
+      >
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+    <div
+      id="page"
+      style="border: 1px solid black; margin-top: 2%; margin-left: auto"
+    >
+      <div id="tweet">
+        <div class="tweet-container pt pb pr pl">
+          <div class="user pr">
+            <img
+              *ngIf="user?.imageUrl == 'null'"
+              src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
+            />
+            <img *ngIf="user?.imageUrl != 'null'" src="{{ user?.imageUrl }}" />
+            <div class="username">
+              <div class="name">{{ user?.loginId }}</div>
+              <div class="handle">
+                @{{ user?.firstName + "_" + user?.lastName }}
+              </div>
+            </div>
           </div>
-          <div class="date pt pb">
-            {{ tweet.tweetDate | date: "medium" }}
-          </div>
-          <i class="material-icons">keyboard_arrow_down</i>
-        </div>
-        <div class="tweet-content pt">
-          {{ tweet.tweetText }}
         </div>
       </div>
-      <div class="icons">
-        <div class="ico">
-          <div
-            (click)="likeTweet(tweet.tweetId)"
-            class="far fa-thumbs-up number"
-          >
-            {{ tweet.likes.length }}
+      <div style="margin-left: 70%">
+        <button
+          class="btn btn-outline-primary"
+          style="border-radius: 5px; padding: 5px; font-size: 100%"
+          (click)="showTweetForm()"
+        >
+          Add Tweet
+        </button>
+      </div>
+      <div *ngIf="showForm" class="modal-content">
+        <div class="modal-header">
+          <div>
+            <form [formGroup]="tweetCreate" (submit)="addTweet()">
+              <input
+                style="border-radius: 10px; width: 120%"
+                type="text"
+                class="form-control"
+                formControlName="tweetText"
+                placeholder="Enter your tweet"
+              />
+
+              <button
+                class="btn btn-outline-primary"
+                style="border-radius: 5px; padding: 5px; font-size: 100%"
+                type="submit"
+              >
+                Add
+              </button>
+            </form>
           </div>
-        </div>
-        <div class="ico">
-          <div class="far fa-comment number">{{ tweet.comments.length }}</div>
         </div>
       </div>
     </div>
-    <div class="wrap pt">
-      <div class="box">
-        <div *ngIf="tweet.comments.length > 0">
-          <div class="content" *ngFor="let comment of tweet.comments">
-            <div class="line">
-              <div class="border"></div>
-              <!-- <img
-                class="avatar"
-                src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
-              /> -->
-            </div>
-            <div class="info" style="padding-left: 8%">
-              <div class="userinfo sl">
-                <div class="name">{{ comment.username }}</div>
-                <div class="handle">@{{ comment.username }}</div>
+
+    <div *ngFor="let tweet of lastTweet">
+      <div id="page">
+        <div id="tweet">
+          <div class="tweet-container pt pb pr pl">
+            <div class="user pr">
+              <img src="{{ tweet.imageUrl }}" />
+              <div class="username">
+                <div class="name">{{ tweet.username }}</div>
+                <div class="handle">
+                  @{{ tweet.firstName + "_" + tweet.lastName }}
+                </div>
+              </div>
+              <div class="date pt pb">
+                {{ tweet.tweetDate | date: "medium" }}
               </div>
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
-            <div class="replyto sl" style="padding-left: 10%">
-              Replying to <a>{{ tweet.username }}</a>
+            <div class="tweet-content pt">
+              {{ tweet.tweetText }}
             </div>
-            <div class="subtweet-content sl">
-              {{ comment.comment }}
+          </div>
+          <div class="icons">
+            <div class="ico">
+              <div
+                (click)="likeTweet(tweet.tweetId)"
+                class="far fa-thumbs-up number"
+              >
+                {{ tweet.likes.length }}
+              </div>
+            </div>
+            <div class="ico">
+              <div class="far fa-comment number">
+                {{ tweet.comments.length }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div style="padding-left: 15%; padding-top: 5%">
-        <!-- <form [formGroup]="comment" (submit)="reply(tweet.tweetId)"> -->
-        <input
-          type="text"
-          class="form-control"
-          name="comment"
-          [(ngModel)]="comment"
-        />
-        <button (click)="reply(tweet.tweetId)">Reply</button>
-        <!-- </form> -->
+        <div class="wrap pt">
+          <div class="box">
+            <div *ngIf="tweet.comments.length > 0">
+              <div class="content" *ngFor="let comment of tweet.comments">
+                <div class="line">
+                  <div class="border"></div>
+                  <img class="avatar" src="{{ comment?.imageUrl }}" />
+                </div>
+                <div class="info" style="padding-left: 8%">
+                  <div class="userinfo sl">
+                    <div class="name">{{ comment.username }}</div>
+                  </div>
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </div>
+                <div class="replyto sl" style="padding-left: 10%">
+                  Replying to <a>{{ tweet.username }}</a>
+                </div>
+                <div class="subtweet-content sl">
+                  {{ comment.comment }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding-left: 15%; padding-top: 5%">
+            <!-- <form [formGroup]="comment" (submit)="reply(tweet.tweetId)"> -->
+            <input
+              type="text"
+              class="form-control"
+              name="comment"
+              [(ngModel)]="comment"
+            />
+            <button (click)="reply(tweet.tweetId)">Reply</button>
+            <!-- </form> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>

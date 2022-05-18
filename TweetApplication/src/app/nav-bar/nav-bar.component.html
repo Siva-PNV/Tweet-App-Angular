@@ -1,4 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav
+  *ngIf="loginService.isLoggedIn()"
+  class="navbar navbar-expand-lg navbar-dark bg-dark"
+>
   <a class="navbar-brand" routerLink="">
     <i class="fab fa-twitter"></i> &nbsp;TweetApp</a
   >

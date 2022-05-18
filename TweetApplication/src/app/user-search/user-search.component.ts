@@ -8,10 +8,10 @@ import { LoginService } from '../services/login/login-service.service';
   styleUrls: ['./user-search.component.css'],
 })
 export class UserSearchComponent implements OnInit {
-  othersTweets: any = [];
+  othersTweets: any;
   userId: number;
   userName: string;
-
+  user: any;
   constructor(
     private loginService: LoginService,
     private route: ActivatedRoute
@@ -28,5 +28,44 @@ export class UserSearchComponent implements OnInit {
     this.loginService.searchUserTweet(username).subscribe((data) => {
       this.othersTweets = data;
     });
+
+    const loginId =
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
+    if (loginId != null) {
+      this.loginService.getUserByUserName(loginId).subscribe((data) => {
+        this.user = data;
+      });
+    }
+  }
+
+  likeTweet(tweetId: string) {
+    const loginId =
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
+    if (loginId != null) {
+      this.loginService.addLike(loginId, tweetId).subscribe();
+      this.getTweetsByUserName(this.userName);
+    }
+  }
+
+  reply(tweetId: string) {
+    //console.log('comme ' + this.comment);
+    const loginId =
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
+    // if (loginId != null) {
+    //   this.loginService.addComment(loginId, tweetId, this.comment).subscribe(
+    //     (data) => {
+    //       console.log(data);
+    //     },
+    //     (err) => {
+    //       alert(err.message);
+    //     }
+    //   );
+    this.getTweetsByUserName(this.userName);
   }
 }

@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,6 +16,28 @@ export function ConfirmedValidator(
     }
     if (control.value !== matchingControl.value) {
       matchingControl.setErrors({ confirmedValidator: true });
+    } else {
+      matchingControl.setErrors(null);
+    }
+  };
+}
+
+export function ConfirmedValidatorEmail(
+  controlName: string,
+  matchingControlName: string
+) {
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    if (
+      matchingControl.errors &&
+      !matchingControl.errors.confirmedValidatorEmail
+    ) {
+      return;
+    }
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({ confirmedValidatorEmail: true });
     } else {
       matchingControl.setErrors(null);
     }
@@ -46,7 +67,6 @@ export class RegisterComponent implements OnInit {
           [Validators.required, Validators.pattern('[a-zA-Z ]*')],
         ],
         lastName: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-        username: ['', Validators.required],
         email: [
           '',
           [
@@ -55,6 +75,15 @@ export class RegisterComponent implements OnInit {
             Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
           ],
         ],
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.email,
+            Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+          ],
+        ],
+
         contactNumber: [
           '',
           [Validators.required, Validators.pattern('^([6-9]{1})([0-9]{9})$')],
@@ -63,7 +92,10 @@ export class RegisterComponent implements OnInit {
         confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
       },
       {
-        validator: ConfirmedValidator('password', 'confirmPassword'),
+        validator: [
+          ConfirmedValidator('password', 'confirmPassword'),
+          ConfirmedValidatorEmail('email', 'username'),
+        ],
       }
     );
   }

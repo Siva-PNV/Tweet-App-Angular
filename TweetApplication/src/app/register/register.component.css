@@ -99,7 +99,7 @@ fieldset {
 }
 
 .validationMsg {
-  width: 208px;
+  width: 150%;
   text-align: left;
   height: 20px;
 }
@@ -144,4 +144,12 @@ input[type="password"] {
   display: flex;
   width: 600px;
   margin-top: 40px;
+}
+
+.row {
+  margin-top: 15px;
+}
+
+a:hover {
+  color: rgb(115, 111, 111);
 }
