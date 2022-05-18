@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login/login-service.service';
 
@@ -10,6 +10,8 @@ import { LoginService } from '../services/login/login-service.service';
   styleUrls: ['./user-dashboard.component.css'],
 })
 export class UserDashboardComponent implements OnInit {
+  @ViewChild('addform')
+  addform: ElementRef;
   userName: string;
   lastTweet: any;
   tweetCreate: FormGroup;
@@ -18,7 +20,8 @@ export class UserDashboardComponent implements OnInit {
   searchUser: string;
   name: string;
   tweetText: string;
-  showForm: boolean = false;
+  showcomments: boolean = false;
+  tweetId: string;
   constructor(
     private http: HttpClient,
     private loginService: LoginService,
@@ -50,12 +53,10 @@ export class UserDashboardComponent implements OnInit {
   }
 
   getLatestTweet() {
-    this.http
-      .get('http://localhost:8080/api/v1.0/tweets/all')
-      .subscribe((data) => {
-        console.log(data);
-        this.lastTweet = data;
-      });
+    this.loginService.getAllTweets().subscribe((data) => {
+      this.lastTweet = data;
+      console.log(data);
+    });
 
     const loginId =
       localStorage.getItem('loginId') == null
@@ -78,33 +79,28 @@ export class UserDashboardComponent implements OnInit {
     }
   }
 
-  reply(tweetId: string) {
+  reply() {
     const loginId =
       localStorage.getItem('loginId') == null
         ? ''
         : localStorage.getItem('loginId');
     if (loginId != null) {
-      this.loginService.addComment(loginId, tweetId, this.comment).subscribe(
-        (data) => {
-          console.log(data);
-        },
-        (err) => {
-          alert(err.message);
-        }
-      );
+      this.loginService
+        .addComment(loginId, this.tweetId, this.comment)
+        .subscribe(
+          (data) => {},
+          (err) => {
+            alert(err.message);
+          }
+        );
       this.getLatestTweet();
     }
   }
 
   search() {
     this.loginService.getUserByUserName(this.searchUser).subscribe((data) => {
-      console.log(data);
       this.router.navigate(['/search', this.searchUser]);
     });
-  }
-
-  showTweetForm() {
-    this.showForm = true;
   }
 
   addTweet() {
@@ -113,7 +109,34 @@ export class UserDashboardComponent implements OnInit {
         ? ''
         : localStorage.getItem('loginId');
     if (loginId != null) {
-      this.loginService.createTweet(loginId, this.tweetCreate.value);
+      const newTweet = {
+        tweetText: this.tweetText,
+      };
+      this.loginService.createTweet(loginId, newTweet).subscribe();
     }
+    this.getLatestTweet();
+  }
+
+  public onOpenModal(): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#addEmployeeModal');
+    container?.appendChild(button);
+    button.click();
+  }
+
+  public onOpenCommentModal(tempTweetId: string): void {
+    this.tweetId = tempTweetId;
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#addCommentModal');
+    container?.appendChild(button);
+    button.click();
   }
 }
