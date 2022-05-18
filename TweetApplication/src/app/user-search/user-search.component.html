@@ -9,12 +9,12 @@
       <div class="user pr">
         <img
           class="avatar"
-          *ngIf="user?.imageUrl == 'null'"
+          *ngIf="user?.imageUrl == null"
           src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
         />
         <img
           class="avatar"
-          *ngIf="user?.imageUrl != 'null'"
+          *ngIf="user?.imageUrl != null"
           src="{{ user?.imageUrl }}"
         />
         <div class="username">
@@ -34,12 +34,12 @@
         <div class="user pr">
           <img
             class="avatar"
-            *ngIf="tweet?.imageUrl == 'null'"
+            *ngIf="!tweet?.imageUrl"
             src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
           />
           <img
             class="avatar"
-            *ngIf="tweet?.imageUrl != 'null'"
+            *ngIf="tweet?.imageUrl"
             src="{{ tweet?.imageUrl }}"
           />
           <div class="username">
@@ -77,12 +77,12 @@
               <div class="border"></div>
               <img
                 class="avatar"
-                *ngIf="comment?.imageUrl == 'null'"
+                *ngIf="!comment?.imageUrl"
                 src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
               />
               <img
                 class="avatar"
-                *ngIf="comment?.imageUrl != 'null'"
+                *ngIf="comment?.imageUrl"
                 src="{{ comment?.imageUrl }}"
               />
             </div>

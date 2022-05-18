@@ -36,12 +36,12 @@
           <div class="user pr">
             <img
               class="avatar"
-              *ngIf="user?.imageUrl == 'null'"
+              *ngIf="user?.imageUrl == null"
               src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
             />
             <img
               class="avatar"
-              *ngIf="user?.imageUrl != 'null'"
+              *ngIf="user?.imageUrl != null"
               src="{{ user?.imageUrl }}"
             />
             <div class="username">
@@ -53,35 +53,68 @@
           </div>
         </div>
       </div>
-      <div style="margin-left: 70%">
+      <div style="margin-left: 70%" id="main-container">
         <button
           class="btn btn-outline-primary"
           style="border-radius: 5px; padding: 5px; font-size: 100%"
-          (click)="showTweetForm()"
+          (click)="onOpenModal()"
         >
           Add Tweet
         </button>
       </div>
-      <div *ngIf="showForm" class="modal-content">
-        <div class="modal-header">
-          <div>
-            <form [formGroup]="tweetCreate" (submit)="addTweet()">
-              <input
-                style="border-radius: 10px; width: 120%"
-                type="text"
-                class="form-control"
-                formControlName="tweetText"
-                placeholder="Enter your tweet"
-              />
-
-              <button
-                class="btn btn-outline-primary"
-                style="border-radius: 5px; padding: 5px; font-size: 100%"
-                type="submit"
-              >
-                Add
-              </button>
-            </form>
+      <div
+        class="modal fade"
+        id="addEmployeeModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="addEmployeeModalLabel"
+        aria-hidden="true"
+        style="margin-top: 20%; margin-left: 35%; padding: auto"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div style="margin-left: 5%; margin-top: 2%">
+                <a
+                  type="button"
+                  id="add-employee-form"
+                  class="btn"
+                  data-dismiss="modal"
+                >
+                  <i style="font-size: 20px" class="fa">&#x2715;</i>
+                </a>
+              </div>
+              <div style="margin: 10%">
+                <textarea
+                  rows="5"
+                  cols="50"
+                  type="text"
+                  class="form-control"
+                  name="tweetText"
+                  [(ngModel)]="tweetText"
+                  placeholder="Enter your tweet"
+                ></textarea>
+                <div style="margin-left: 35%; margin-top: 3%">
+                  <button
+                    style="
+                      border-radius: 6px;
+                      padding-top: 5px;
+                      padding-bottom: 5px;
+                      padding-left: 10px;
+                      padding-right: 10px;
+                      font-size: 100%;
+                    "
+                    type="submit"
+                    id="add-employee-form"
+                    class="btn btn-outline-primary"
+                    data-dismiss="modal"
+                    (click)="addTweet()"
+                  >
+                    Tweet
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -94,12 +127,12 @@
             <div class="user pr">
               <img
                 class="avatar"
-                *ngIf="tweet?.imageUrl == 'null'"
+                *ngIf="!tweet?.imageUrl"
                 src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
               />
               <img
                 class="avatar"
-                *ngIf="tweet?.imageUrl != 'null'"
+                *ngIf="tweet?.imageUrl"
                 src="{{ tweet?.imageUrl }}"
               />
 
@@ -109,10 +142,10 @@
                   @{{ tweet.firstName + "_" + tweet.lastName }}
                 </div>
               </div>
+              <i class="material-icons">keyboard_arrow_down</i>
               <div class="date pt pb" style="font-size: 12px">
                 {{ tweet.tweetDate | date: "medium" }}
               </div>
-              <i class="material-icons">keyboard_arrow_down</i>
             </div>
             <div class="tweet-content pt">
               {{ tweet.tweetText }}
@@ -123,17 +156,25 @@
               <div
                 (click)="likeTweet(tweet.tweetId)"
                 class="far fa-thumbs-up number"
+                style="font-size: 20px"
               >
                 {{ tweet.likes.length }}
               </div>
             </div>
             <div class="ico">
-              <div class="far fa-comment number">
-                {{ tweet.comments.length }}
+              <div style="margin-left: 25%" id="main-container">
+                <a
+                  (click)="onOpenCommentModal(tweet.tweetId)"
+                  class="btn far fa-comment number"
+                  style="font-size: 20px"
+                >
+                  {{ tweet.comments.length }}
+                </a>
               </div>
             </div>
           </div>
         </div>
+
         <div class="wrap pt">
           <div class="box">
             <div *ngIf="tweet.comments.length > 0">
@@ -142,12 +183,12 @@
                   <div class="border"></div>
                   <img
                     class="avatar"
-                    *ngIf="comment?.imageUrl == 'null'"
+                    *ngIf="!comment?.imageUrl"
                     src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
                   />
                   <img
                     class="avatar"
-                    *ngIf="comment?.imageUrl != 'null'"
+                    *ngIf="comment?.imageUrl"
                     src="{{ comment?.imageUrl }}"
                   />
                 </div>
@@ -167,15 +208,75 @@
             </div>
           </div>
           <div style="padding-left: 15%; padding-top: 5%">
-            <!-- <form [formGroup]="comment" (submit)="reply(tweet.tweetId)"> -->
-            <input
-              type="text"
-              class="form-control"
-              name="comment"
-              [(ngModel)]="comment"
-            />
-            <button (click)="reply(tweet.tweetId)">Reply</button>
-            <!-- </form> -->
+            <div style="padding-left: 15%; padding-top: 5%">
+              <!-- <form [formGroup]="comment" (submit)="reply(tweet.tweetId)"> -->
+              <!-- <input
+                type="text"
+                class="form-control"
+                name="comment"
+                [(ngModel)]="comment"
+                placeholder="{{ tweet.tweetId }}"
+              />
+              <button (click)="reply(tweet.tweetId)">Reply</button> -->
+              <!-- </form> -->
+
+              <div
+                class="modal fade"
+                id="addCommentModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="addEmployeeModalLabel"
+                aria-hidden="true"
+                style="margin-top: 20%; margin-left: 35%; padding: auto"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <div style="margin-left: 5%; margin-top: 2%">
+                        <a
+                          type="button"
+                          id="add-employee-form"
+                          class="btn"
+                          data-dismiss="modal"
+                        >
+                          <i style="font-size: 20px" class="fa">&#x2715;</i>
+                        </a>
+                      </div>
+                      <div style="margin: 10%">
+                        <textarea
+                          rows="5"
+                          cols="50"
+                          type="text"
+                          class="form-control"
+                          name="comment"
+                          [(ngModel)]="comment"
+                          placeholder="Tweet your reply"
+                        ></textarea>
+                        <div style="margin-left: 35%; margin-top: 3%">
+                          <button
+                            style="
+                              border-radius: 6px;
+                              padding-top: 5px;
+                              padding-bottom: 5px;
+                              padding-left: 10px;
+                              padding-right: 10px;
+                              font-size: 100%;
+                            "
+                            type="submit"
+                            id="add-employee-form"
+                            class="btn btn-outline-primary"
+                            data-dismiss="modal"
+                            (click)="reply()"
+                          >
+                            Reply
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

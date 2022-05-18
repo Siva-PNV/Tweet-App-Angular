@@ -375,3 +375,12 @@ a {
 .fa-thumbs-up::after {
   animation-fill-mode: initial;
 }
+
+textarea::placeholder {
+  text-align: center;
+  padding-top: 10%;
+}
+
+a:hover {
+  color: red;
+}
