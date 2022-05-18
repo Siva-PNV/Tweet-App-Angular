@@ -7,13 +7,15 @@
   <div id="tweet">
     <div class="tweet-container pt pb pr pl">
       <div class="user pr">
-        <!-- <img
-              *ngIf="user?.imageUrl == 'null'"
-              src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
-            /> -->
         <img
-          *ngIf="user?.imageUrl != 'null'"
+          class="avatar"
+          *ngIf="user?.imageUrl == 'null'"
           src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
+        />
+        <img
+          class="avatar"
+          *ngIf="user?.imageUrl != 'null'"
+          src="{{ user?.imageUrl }}"
         />
         <div class="username">
           <div class="name">{{ user?.loginId }}</div>
@@ -30,7 +32,16 @@
     <div id="tweet">
       <div class="tweet-container pt pb pr pl">
         <div class="user pr">
-          <!-- <img src="{{ user?.imageUrl }}" /> -->
+          <img
+            class="avatar"
+            *ngIf="tweet?.imageUrl == 'null'"
+            src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
+          />
+          <img
+            class="avatar"
+            *ngIf="tweet?.imageUrl != 'null'"
+            src="{{ tweet?.imageUrl }}"
+          />
           <div class="username">
             <div class="name">{{ tweet.username }}</div>
             <div class="handle">@{{ tweet.username }}</div>
@@ -64,10 +75,16 @@
           <div class="content" *ngFor="let comment of tweet.comments">
             <div class="line">
               <div class="border"></div>
-              <!-- <img
+              <img
                 class="avatar"
+                *ngIf="comment?.imageUrl == 'null'"
                 src="https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500"
-              /> -->
+              />
+              <img
+                class="avatar"
+                *ngIf="comment?.imageUrl != 'null'"
+                src="{{ comment?.imageUrl }}"
+              />
             </div>
             <div class="info" style="padding-left: 8%">
               <div class="userinfo sl">

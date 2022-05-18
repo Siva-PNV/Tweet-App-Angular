@@ -29,15 +29,9 @@ export class UserSearchComponent implements OnInit {
       this.othersTweets = data;
     });
 
-    const loginId =
-      localStorage.getItem('loginId') == null
-        ? ''
-        : localStorage.getItem('loginId');
-    if (loginId != null) {
-      this.loginService.getUserByUserName(loginId).subscribe((data) => {
-        this.user = data;
-      });
-    }
+    this.loginService.getUserByUserName(this.userName).subscribe((data) => {
+      this.user = data;
+    });
   }
 
   likeTweet(tweetId: string) {
