@@ -1,0 +1,28 @@
+label {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+p {
+  font-weight: 800;
+}
+
+h3 {
+  font-weight: bolder;
+}
+.profile-img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+/* .profile-img:hover {
+  position: relative;
+  border-radius: 0%;
+  top: 25px;
+  left: -35px;
+  width: 300px;
+  height: auto;
+  display: block;
+  z-index: 999;
+} */

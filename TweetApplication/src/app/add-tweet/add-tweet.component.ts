@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login/login-service.service';
+import { TweetServiceService } from '../services/tweets/tweet-service.service';
 
 @Component({
   selector: 'app-add-tweet',
@@ -14,7 +15,8 @@ export class AddTweetComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private tweetService: TweetServiceService
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +40,7 @@ export class AddTweetComponent implements OnInit {
       tweetText: this.Tweet.value.tweetDescription,
     };
     if (loginId != null) {
-      this.loginService.createTweet(loginId, tweet).subscribe((data) => {
+      this.tweetService.createTweet(loginId, tweet).subscribe((data) => {
         if (data != null) {
           this.router.navigate(['/my-tweets']);
         } else {

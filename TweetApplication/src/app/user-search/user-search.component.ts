@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { LoginService } from '../services/login/login-service.service';
+import { TweetServiceService } from '../services/tweets/tweet-service.service';
 
 @Component({
   selector: 'app-user-search',
@@ -14,6 +15,7 @@ export class UserSearchComponent implements OnInit {
   user: any;
   constructor(
     private loginService: LoginService,
+    private tweetService: TweetServiceService,
     private route: ActivatedRoute
   ) {}
 
@@ -25,7 +27,7 @@ export class UserSearchComponent implements OnInit {
   }
 
   private getTweetsByUserName(username: string) {
-    this.loginService.searchUserTweet(username).subscribe((data) => {
+    this.tweetService.searchUserTweet(username).subscribe((data) => {
       this.othersTweets = data;
     });
 
@@ -40,7 +42,7 @@ export class UserSearchComponent implements OnInit {
         ? ''
         : localStorage.getItem('loginId');
     if (loginId != null) {
-      this.loginService.addLike(loginId, tweetId).subscribe();
+      this.tweetService.addLike(loginId, tweetId).subscribe();
       this.getTweetsByUserName(this.userName);
     }
   }

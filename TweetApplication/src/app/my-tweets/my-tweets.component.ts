@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../services/login/login-service.service';
+import { TweetServiceService } from '../services/tweets/tweet-service.service';
 
 @Component({
   selector: 'app-my-tweets',
@@ -8,70 +9,101 @@ import { LoginService } from '../services/login/login-service.service';
   styleUrls: ['./my-tweets.component.css'],
 })
 export class MyTweetsComponent implements OnInit {
-  addForm: FormGroup;
-  myTweets: any = [];
+  othersTweets: any;
   userId: number;
-  displayNoData: string;
-  submitted = false;
-
-  user: any;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  constructor(private loginService: LoginService, private fb: FormBuilder) {}
+  userName: string;
+  tweetId: string;
+  updateTweetText: string;
+  tweetUpdate: FormGroup;
+  tweetsLength: number;
+  constructor(
+    private loginService: LoginService,
+    private fb: FormBuilder,
+    private tweetService: TweetServiceService
+  ) {}
 
   ngOnInit(): void {
-    this.addForm = this.fb.group({
-      comments: ['', Validators.required],
-    });
-
-    const username =
+    const loginId =
       localStorage.getItem('loginId') == null
         ? ''
         : localStorage.getItem('loginId');
-    if (username != null) {
-      this.getTweetsByUserName(username);
+    if (loginId != null) {
+      this.getTweetsByUserName(loginId);
     }
-  }
-
-  private getTweetsByUserName(username: string) {
-    this.loginService.getTweetsByUserName(username).subscribe((data) => {
-      this.myTweets = data;
-
-      if (this.myTweets.length > 0) {
-        this.displayNoData = 'true';
-        this.loginService.getUserByUserName(username).subscribe((data) => {
-          this.user = data;
-          this.firstName = this.user.firstName;
-          this.lastName = this.user.lastName;
-        });
-      } else {
-        this.displayNoData = 'false';
-      }
+    this.tweetUpdate = this.fb.group({
+      tweetText: ['', [Validators.required]],
     });
   }
 
-  addComments(tweetId: string) {
+  private getTweetsByUserName(username: string) {
+    this.tweetService.showMyTweets(username).subscribe((data) => {
+      this.othersTweets = data;
+      this.tweetsLength = this.othersTweets.length;
+    });
+  }
+
+  likeTweet(tweetId: string) {
+    const loginId =
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
+    if (loginId != null) {
+      this.tweetService.addLike(loginId, tweetId).subscribe(
+        (data) => {
+          this.getTweetsByUserName(loginId);
+        },
+        (err) => {
+          alert(err.message);
+        }
+      );
+    }
+  }
+
+  editTweet() {
     const loginId =
       localStorage.getItem('loginId') == null
         ? ''
         : localStorage.getItem('loginId');
 
-    this.submitted = true;
-    console.log(this.addForm.invalid);
-    if (this.addForm.invalid) {
-      return;
-    }
-
-    const userComment = {
-      comment: this.addForm.value.comments,
-    };
-    if (loginId) {
-      this.loginService
-        .addComment(loginId, tweetId, userComment)
+    if (loginId != null) {
+      const newUpdatedTweet = {
+        tweetText: this.updateTweetText,
+      };
+      this.tweetService
+        .updateTweet(loginId, this.tweetId, newUpdatedTweet)
         .subscribe((data) => {
-          console.log(data);
+          this.getTweetsByUserName(loginId);
         });
     }
+  }
+
+  deleteTweet(tweetId: string) {
+    const loginId =
+      localStorage.getItem('loginId') == null
+        ? ''
+        : localStorage.getItem('loginId');
+
+    if (loginId != null) {
+      this.tweetService.deleteTweet(loginId, tweetId).subscribe(
+        (data) => {
+          this.getTweetsByUserName(loginId);
+        },
+        (err) => {
+          alert(err.message);
+        }
+      );
+    }
+  }
+
+  public onEditTweetModal(tempTweetId: string): void {
+    this.tweetId = tempTweetId;
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#editTweetModal');
+    container?.appendChild(button);
+    button.click();
   }
 }
