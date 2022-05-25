@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { LoginService } from '../services/login/login-service.service';
+import { TweetServiceService } from '../services/tweets/tweet-service.service';
 
 @Component({
   selector: 'app-tweet-comments-likes',
@@ -26,7 +27,8 @@ export class TweetCommentsLikesComponent implements OnInit {
   constructor(
     private loginService: LoginService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private tweetService: TweetServiceService
   ) {}
 
   ngOnInit(): void {
@@ -49,17 +51,17 @@ export class TweetCommentsLikesComponent implements OnInit {
         ? ''
         : localStorage.getItem('loginId');
     if (userId != null) {
-      this.loginService.getTweetsByUserName(userId).subscribe((data) => {
+      this.tweetService.getTweetsByUserName(userId).subscribe((data) => {
         this.tweet = data;
         console.log(this.tweet);
-        this.loginService
+        this.tweetService
           .getTweetsByUserName(this.tweet.userId)
           .subscribe((data) => {
             this.user = data;
             this.firstName = this.user.firstName;
             this.lastName = this.user.lastName;
           });
-        this.loginService.getTweetLikesById(tweetId).subscribe((data) => {
+        this.tweetService.getTweetLikesById(tweetId).subscribe((data) => {
           this.likes = data;
 
           var isPresent = this.likes.some(function (el: any) {
@@ -73,7 +75,7 @@ export class TweetCommentsLikesComponent implements OnInit {
           console.log(isPresent);
         });
 
-        this.loginService.getTweetCommentsById(tweetId).subscribe((data) => {
+        this.tweetService.getTweetCommentsById(tweetId).subscribe((data) => {
           this.comments = data;
           console.log(this.comments.length);
           if (this.comments.length > 0) {
@@ -92,7 +94,7 @@ export class TweetCommentsLikesComponent implements OnInit {
         ? ''
         : localStorage.getItem('loginId');
     if (loginId != null) {
-      this.loginService.addLike(loginId, tweetId).subscribe((data) => {
+      this.tweetService.addLike(loginId, tweetId).subscribe((data) => {
         console.log(data);
         this.getTweetById(tweetId);
       });
@@ -115,7 +117,7 @@ export class TweetCommentsLikesComponent implements OnInit {
       comment: this.addCommentForm.value.comments,
     };
     if (loginId != null) {
-      this.loginService
+      this.tweetService
         .addComment(loginId, tweetId, userComment)
         .subscribe((data) => {
           console.log(data);

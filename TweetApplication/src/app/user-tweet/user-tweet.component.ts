@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { LoginService } from '../services/login/login-service.service';
+import { TweetServiceService } from '../services/tweets/tweet-service.service';
 
 @Component({
   selector: 'app-user-tweet',
@@ -26,7 +27,8 @@ export class UserTweetComponent implements OnInit {
   constructor(
     private authorizedService: LoginService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private tweetService: TweetServiceService
   ) {}
 
   ngOnInit(): void {
@@ -53,13 +55,13 @@ export class UserTweetComponent implements OnInit {
       this.authorizedService.getUserByUserName(userId).subscribe((data) => {
         this.tweet = data;
         console.log(this.tweet);
-        this.authorizedService.getTweetsByUserName(userId).subscribe((data) => {
+        this.tweetService.getTweetsByUserName(userId).subscribe((data) => {
           console.log(data);
           this.user = data;
           this.firstName = this.user.firstName;
           this.lastName = this.user.lastName;
         });
-        this.authorizedService.getTweetLikesById(tweetId).subscribe((data) => {
+        this.tweetService.getTweetLikesById(tweetId).subscribe((data) => {
           this.likes = data;
 
           var isPresent = this.likes.some(function (el: any) {
@@ -95,7 +97,7 @@ export class UserTweetComponent implements OnInit {
         : localStorage.getItem('loginId');
 
     if (loginId != null) {
-      this.authorizedService.addLike(loginId, tweetId).subscribe((data) => {
+      this.tweetService.addLike(loginId, tweetId).subscribe((data) => {
         console.log(data);
         this.getTweetById(tweetId);
       });
@@ -118,7 +120,7 @@ export class UserTweetComponent implements OnInit {
       comment: this.addCommentForm.value.comments,
     };
     if (loginId != null) {
-      this.authorizedService
+      this.tweetService
         .addComment(loginId, tweetId, userComment)
         .subscribe((data) => {
           console.log(data);

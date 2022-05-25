@@ -3,6 +3,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AllTweets } from '../model/tweets-model';
 import { LoginService } from '../services/login/login-service.service';
+import { TweetServiceService } from '../services/tweets/tweet-service.service';
 
 @Component({
   selector: 'app-tweets',
@@ -14,7 +15,11 @@ export class TweetsComponent implements OnInit {
   allTweets: any = [];
   displayNoData: string;
 
-  constructor(private http: HttpClient, private loginService: LoginService) {}
+  constructor(
+    private http: HttpClient,
+    private loginService: LoginService,
+    private tweetService: TweetServiceService
+  ) {}
 
   ngOnInit(): void {
     this.getAllTweets();
@@ -43,7 +48,7 @@ export class TweetsComponent implements OnInit {
         ? ''
         : localStorage.getItem('loginId');
     if (loginId != null) {
-      this.loginService.addLike(loginId, tweetId);
+      this.tweetService.addLike(loginId, tweetId);
       this.getAllTweets();
     }
   }

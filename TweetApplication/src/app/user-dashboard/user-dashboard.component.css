@@ -381,6 +381,20 @@ textarea::placeholder {
   padding-top: 10%;
 }
 
-a:hover {
+#scroll {
+  overflow: auto;
+  margin-left: -2%;
+  margin-right: 10%;
+}
+
+.fa-heart:hover {
   color: red;
+}
+
+.fa-heart {
+  color: #0a0b0c;
+}
+
+.fa-heart::after {
+  animation-fill-mode: both;
 }

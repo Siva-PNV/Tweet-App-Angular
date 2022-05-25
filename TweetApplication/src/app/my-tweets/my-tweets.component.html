@@ -1,36 +1,215 @@
-<div class="data" *ngIf="displayNoData == 'true'">
-  <div class="card" *ngFor="let i of myTweets" style="margin: 20px">
-    <div class="card-header">
-      <div class="d-flex">
-        <h5>{{ firstName | titlecase }} {{ lastName | titlecase }}</h5>
-        <div class="ml-auto">
-          {{ i.tweetDate | date: "medium" }}
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="mobile-web-app-capable" content="yes" />
+<div style="display: flex">
+  <div style="flex: 50%">
+    <div style="margin-top: 25%; margin-left: 50%">
+      <div>
+        <div>
+          <a
+            style="
+              border-radius: 5px;
+              padding: 10px 30px 10px 30px;
+              border: none;
+            "
+            class="btn btn-outline-primary"
+            routerLink="/home"
+            >Home</a
+          >
         </div>
-      </div>
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">{{ i.tweetTag }}</h5>
-      <p class="card-text">
-        <i class="fas fa-2x fa-quote-left"></i> &nbsp; {{ i.tweetText }}
-      </p>
-
-      <div class="d-flex">
-        <a class="viewcomments" [routerLink]="['/tweet', i.tweetId]">
-          <i class="far fa-thumbs-up"></i>
-        </a>
-        {{ i.likes.length }}
-        <div class="ml-auto">
-          <a class="viewcomments" [routerLink]="['/tweet', i.tweetId]"
-            ><i class="far fa-comment"></i
-          ></a>
-          {{ i.comments.length }}
+        <div style="margin-top: 25%">
+          <a
+            style="
+              border-radius: 5px;
+              padding: 10px 30px 10px 30px;
+              border: none;
+            "
+            class="btn btn-outline-primary"
+            routerLink="/profile"
+            >Profile</a
+          >
+        </div>
+        <div style="margin-top: 25%">
+          <a
+            style="
+              border-radius: 5px;
+              padding: 10px 30px 10px 30px;
+              border: none;
+            "
+            class="btn btn-outline-primary"
+            routerLink="/my-tweets"
+            >My Tweets</a
+          >
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<div *ngIf="displayNoData == 'false'" id="displaytag">
-  <h5>No Tweets Added By You</h5>
-  <a [routerLink]="['/add-tweet']">click here</a> to add your first tweet
+  <div style="flex: 100%">
+    <div *ngIf="tweetsLength == 0" style="margin: 25%; font-size: 20px">
+      No tweets to show
+    </div>
+    <div *ngIf="tweetsLength > 0">
+      <div *ngFor="let tweet of othersTweets">
+        <div id="page">
+          <div id="tweet">
+            <div class="tweet-container pt pb pr pl">
+              <div class="user pr">
+                <img
+                  class="avatar"
+                  *ngIf="!tweet?.imageUrl"
+                  src="assets/images/user_icon.png"
+                />
+                <img
+                  class="avatar"
+                  *ngIf="tweet?.imageUrl"
+                  src="{{ tweet?.imageUrl }}"
+                />
+                <div class="username">
+                  <div class="name">{{ tweet.username }}</div>
+                  <div class="handle">@{{ tweet.username }}</div>
+                </div>
+                <div class="date pt pb">
+                  {{ tweet.tweetDate | date: "medium" }}
+                </div>
+                <i class="material-icons">keyboard_arrow_down</i>
+              </div>
+              <div class="tweet-content pt">
+                {{ tweet.tweetText }}
+              </div>
+              <div style="margin-left: 20%" id="main-container">
+                <button
+                  class="btn btn-outline-primary"
+                  style="padding: 2%; font-size: 15px; border: none"
+                  (click)="onEditTweetModal(tweet.tweetId)"
+                >
+                  Edit
+                </button>
+                <button
+                  class="btn btn-outline-primary"
+                  style="
+                    margin-left: 10%;
+                    padding: 2%;
+                    font-size: 15px;
+                    border: none;
+                  "
+                  (click)="deleteTweet(tweet.tweetId)"
+                >
+                  Delete
+                </button>
+                <!-- Edit tweet -->
+                <div
+                  class="modal fade"
+                  id="editTweetModal"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="addEmployeeModalLabel"
+                  aria-hidden="true"
+                  style="margin-top: 20%; margin-left: 35%; padding: auto"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div style="margin-left: 5%; margin-top: 2%">
+                          <a
+                            type="button"
+                            id="add-employee-form"
+                            class="btn"
+                            data-dismiss="modal"
+                          >
+                            <i style="font-size: 20px" class="fa">&#x2715;</i>
+                          </a>
+                        </div>
+                        <div style="margin: 10%">
+                          <textarea
+                            rows="5"
+                            cols="50"
+                            type="text"
+                            class="form-control"
+                            name="updateTweetText"
+                            [(ngModel)]="updateTweetText"
+                            value="{{ tweet.tweetText }}"
+                          ></textarea>
+                          <div style="margin-left: 35%; margin-top: 3%">
+                            <button
+                              style="
+                                border-radius: 6px;
+                                padding-top: 5px;
+                                padding-bottom: 5px;
+                                padding-left: 10px;
+                                padding-right: 10px;
+                                font-size: 100%;
+                              "
+                              type="submit"
+                              id="add-employee-form"
+                              class="btn btn-outline-primary"
+                              data-dismiss="modal"
+                              (click)="editTweet()"
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end of edit tweet -->
+              </div>
+            </div>
+            <div class="icons">
+              <div class="ico">
+                <div
+                  (click)="likeTweet(tweet.tweetId)"
+                  class="far fa-thumbs-up number"
+                  style="font-size: 20px"
+                >
+                  {{ tweet.likesCount }}
+                </div>
+              </div>
+              <div class="ico">
+                <div class="far fa-comment number" style="font-size: 20px">
+                  {{ tweet.commentsCount }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wrap pt">
+            <div class="box">
+              <div *ngIf="tweet.comments.length > 0">
+                <div class="content" *ngFor="let comment of tweet.comments">
+                  <div class="line">
+                    <div class="border"></div>
+                    <img
+                      class="avatar"
+                      *ngIf="!comment?.imageUrl"
+                      src="assets/images/user_icon.png"
+                    />
+                    <img
+                      class="avatar"
+                      *ngIf="comment?.imageUrl"
+                      src="{{ comment?.imageUrl }}"
+                    />
+                  </div>
+                  <div class="info" style="padding-left: 8%">
+                    <div class="userinfo sl">
+                      <div class="name">{{ comment.username }}</div>
+                      <div class="handle">@{{ comment.username }}</div>
+                    </div>
+                    <i class="material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="replyto sl" style="padding-left: 10%">
+                    Replying to <a>{{ tweet.username }}</a>
+                  </div>
+                  <div class="subtweet-content sl">
+                    {{ comment.comment }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div style="padding-left: 15%; padding-top: 5%"></div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="flex: 50%"></div>
 </div>

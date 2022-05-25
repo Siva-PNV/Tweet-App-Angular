@@ -18,6 +18,7 @@ import { UserSearchComponent } from './user-search/user-search.component';
 import { AddTweetComponent } from './add-tweet/add-tweet.component';
 import { TweetCommentsLikesComponent } from './tweet-comments-likes/tweet-comments-likes.component';
 import { UserTweetComponent } from './user-tweet/user-tweet.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { UserTweetComponent } from './user-tweet/user-tweet.component';
     AddTweetComponent,
     TweetCommentsLikesComponent,
     UserTweetComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,

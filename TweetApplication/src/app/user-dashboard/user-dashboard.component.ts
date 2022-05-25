@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login/login-service.service';
+import { TweetServiceService } from '../services/tweets/tweet-service.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -20,11 +21,14 @@ export class UserDashboardComponent implements OnInit {
   searchUser: string;
   name: string;
   tweetText: string;
+  updateTweetText: string;
   showcomments: boolean = false;
   tweetId: string;
+  tweetUpdate: FormGroup;
+  allUsers: any;
   constructor(
-    private http: HttpClient,
-    private loginService: LoginService,
+    private tweetService: TweetServiceService,
+    public loginService: LoginService,
     private fb: FormBuilder,
     private router: Router
   ) {}
@@ -34,6 +38,9 @@ export class UserDashboardComponent implements OnInit {
 
     this.getWelcomeUserName();
     this.tweetCreate = this.fb.group({
+      tweetText: ['', [Validators.required]],
+    });
+    this.tweetUpdate = this.fb.group({
       tweetText: ['', [Validators.required]],
     });
   }
@@ -53,9 +60,8 @@ export class UserDashboardComponent implements OnInit {
   }
 
   getLatestTweet() {
-    this.loginService.getAllTweets().subscribe((data) => {
+    this.tweetService.getAllTweets().subscribe((data) => {
       this.lastTweet = data;
-      console.log(data);
     });
 
     const loginId =
@@ -74,8 +80,9 @@ export class UserDashboardComponent implements OnInit {
         ? ''
         : localStorage.getItem('loginId');
     if (loginId != null) {
-      this.loginService.addLike(loginId, tweetId).subscribe();
-      this.getLatestTweet();
+      this.tweetService.addLike(loginId, tweetId).subscribe((data) => {
+        this.getLatestTweet();
+      });
     }
   }
 
@@ -85,15 +92,17 @@ export class UserDashboardComponent implements OnInit {
         ? ''
         : localStorage.getItem('loginId');
     if (loginId != null) {
-      this.loginService
+      this.tweetService
         .addComment(loginId, this.tweetId, this.comment)
         .subscribe(
-          (data) => {},
+          (data) => {
+            this.getLatestTweet();
+            location.reload();
+          },
           (err) => {
             alert(err.message);
           }
         );
-      this.getLatestTweet();
     }
   }
 
@@ -112,9 +121,10 @@ export class UserDashboardComponent implements OnInit {
       const newTweet = {
         tweetText: this.tweetText,
       };
-      this.loginService.createTweet(loginId, newTweet).subscribe();
+      this.tweetService.createTweet(loginId, newTweet).subscribe((data) => {
+        this.getLatestTweet();
+      });
     }
-    this.getLatestTweet();
   }
 
   public onOpenModal(): void {
@@ -139,4 +149,21 @@ export class UserDashboardComponent implements OnInit {
     container?.appendChild(button);
     button.click();
   }
+
+  onLogoutClick() {
+    this.loginService.logout();
+    this.router.navigate(['/login']);
+    return false;
+  }
+
+  // onKeyPress(event: any) {
+  //   this.loginService.getAllUsers().subscribe((data) => {
+  //     this.allUsers = data.filter((sectors: any) => {
+  //       return sectors.loginId
+  //         .toLowerCase()
+  //         .includes(event.target.value.toLowerCase());
+  //     });
+  //     console.log(this.allUsers);
+  //   });
+  // }
 }

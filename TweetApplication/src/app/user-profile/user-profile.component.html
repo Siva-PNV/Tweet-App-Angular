@@ -1,0 +1,172 @@
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="mobile-web-app-capable" content="yes" />
+
+<div
+  style="
+    display: flex;
+    background-color: white;
+    height: calc(100vh);
+    width: 95%;
+  "
+>
+  <div style="flex: 70%">
+    <div style="margin-top: 25%; margin-left: 50%">
+      <div>
+        <div>
+          <a
+            style="
+              border-radius: 5px;
+              padding: 10px 30px 10px 30px;
+              border: none;
+            "
+            class="btn btn-outline-primary"
+            routerLink="/home"
+            >Home</a
+          >
+        </div>
+        <div style="margin-top: 25%">
+          <a
+            style="
+              border-radius: 5px;
+              padding: 10px 30px 10px 30px;
+              border: none;
+            "
+            class="btn btn-outline-primary"
+            routerLink="/profile"
+            >Profile</a
+          >
+        </div>
+        <div style="margin-top: 25%">
+          <a
+            style="
+              border-radius: 5px;
+              padding: 10px 30px 10px 30px;
+              border: none;
+            "
+            class="btn btn-outline-primary"
+            routerLink="/my-tweets"
+            >My Tweets</a
+          >
+        </div>
+        <div style="margin-top: 200%">
+          <a
+            style="margin-left: -50%; border: none"
+            *ngIf="loginService.isLoggedIn()"
+            class="nav-link pointer btn"
+            (click)="onLogoutClick()"
+            ><span class="fas fa-sign-out-alt"></span> Logout</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container my-3" *ngIf="user" style="flex: 140%">
+    <div class="container row">
+      <div class="col-md-4 col-sm-4 col-md-12">
+        <div class="row">
+          <div class="col-12">
+            <div class="d-flex">
+              <div style="display: flex">
+                <div style="flex: 50%">
+                  <img
+                    width="150"
+                    class="profile-img"
+                    alt="avatar"
+                    *ngIf="user?.imageUrl == null"
+                    src="assets/images/user_icon.png"
+                  />
+                  <img
+                    width="150"
+                    class="profile-img"
+                    alt="avatar"
+                    *ngIf="user?.imageUrl != null"
+                    src="{{ user?.imageUrl }}"
+                  />
+                </div>
+
+                <div style="flex: 100%; padding: 3%">
+                  change picture
+                  <div class="col-md-6">
+                    <div class="row text-center">
+                      <div>
+                        <input
+                          type="file"
+                          name="file"
+                          (change)="fileChange($event)"
+                          accept="image/jpeg,image/jpg"
+                        />
+                      </div>
+                      <button
+                        style="margin-top: 10%"
+                        class="btn btn-outline-primary"
+                        (click)="addProfile()"
+                      >
+                        Upload
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="ml-auto">
+                <h3 class="my-5">
+                  {{ user.firstName | titlecase }}
+                  {{ user.lastName | titlecase }}
+                </h3>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <br />
+      </div>
+      <div class="col-md-6 col-sm-6 col-md-12">
+        <div class="profile-head">
+          <div class="row"></div>
+          <div class="row" style="margin-top: 5px">
+            <div class="col-md-6">
+              <label>First Name</label>
+              <div class="col-md-12 form-control">
+                {{ user.firstName }}
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 5px">
+            <div class="col-md-6">
+              <label>Last Name</label>
+              <div class="col-md-12 form-control">
+                {{ user.lastName }}
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 5px">
+            <div class="col-md-6">
+              <label>LoginId</label>
+              <div class="col-md-12 form-control">
+                {{ user.loginId }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 5px">
+            <div class="col-md-6">
+              <label>Email</label>
+              <div class="col-md-12 form-control">
+                {{ user.emailId | lowercase }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 5px">
+            <div class="col-md-6">
+              <label>Phone</label>
+              <div class="col-md-12 form-control">
+                {{ user.contactNo }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-md-12"></div>
+    </div>
+  </div>
+  <div style="flex: 60%"></div>
+</div>
