@@ -34,13 +34,13 @@ export class ForgotPasswordComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          console.log('data ' + data);
+          if (data == 'password changed') {
+            this.message = 'password has changed please login !!!';
+          }
         },
         (err) => {
           if (err.status == 400) {
             this.message = 'User name not found';
-          } else if (err.status == 200) {
-            this.message = 'password has changed please login !!!';
           }
         }
       );
