@@ -25,6 +25,12 @@ export class TweetServiceService {
     return this.http.get(`http://localhost:8080/api/v1.0/tweets/${loginId}`);
   }
 
+  public showMyTweetsById(tweetId: string) {
+    return this.http.get(
+      `http://localhost:8080/api/v1.0/tweets/byTweetId/${tweetId}`
+    );
+  }
+
   public addComment(userName: string, tweetId: string, userComment: any) {
     const comment = { comment: userComment };
     return this.http
