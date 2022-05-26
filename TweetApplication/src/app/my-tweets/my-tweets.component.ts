@@ -96,6 +96,12 @@ export class MyTweetsComponent implements OnInit {
   }
 
   public onEditTweetModal(tempTweetId: string): void {
+    this.tweetService.showMyTweetsById(tempTweetId).subscribe((data: any) => {
+      data.forEach((element: any) => {
+        this.updateTweetText = element.tweetText;
+      });
+    });
+
     this.tweetId = tempTweetId;
     const container = document.getElementById('main-container');
     const button = document.createElement('button');

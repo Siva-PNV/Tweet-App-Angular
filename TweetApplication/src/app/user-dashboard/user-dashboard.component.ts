@@ -128,17 +128,19 @@ export class UserDashboardComponent implements OnInit {
   }
 
   public onOpenModal(): void {
+    this.tweetText = '';
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
-    button.setAttribute('data-target', '#addEmployeeModal');
+    button.setAttribute('data-target', '#addTweetModal');
     container?.appendChild(button);
     button.click();
   }
 
   public onOpenCommentModal(tempTweetId: string): void {
+    this.comment = '';
     this.tweetId = tempTweetId;
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
