@@ -50,8 +50,11 @@ export class LoginService {
   }
 
   public forgotPassword(userName: string, newPassword: string) {
+    const password = {
+      password: newPassword,
+    };
     return this.http
-      .post(this.baseUrl + `/${userName}/forgot`, newPassword, httpOptions1)
+      .post(this.baseUrl + `/${userName}/forgot`, password, httpOptions1)
       .pipe();
   }
 
