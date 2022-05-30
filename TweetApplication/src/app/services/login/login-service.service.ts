@@ -28,9 +28,14 @@ export class LoginService {
       .pipe();
   }
 
-  public storeUserData(username: string, firstName: string) {
+  public storeUserData(
+    username: string,
+    firstName: string,
+    authorization: string
+  ) {
     localStorage.setItem('loginId', username);
     localStorage.setItem('firstName', firstName);
+    localStorage.setItem('authorization', authorization);
   }
 
   public isLoggedIn() {
@@ -69,6 +74,12 @@ export class LoginService {
 
         httpOptions1
       )
+      .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
+  }
+
+  public getToken() {
+    return this.http
+      .get(this.baseUrl + `/jwt/authentication`)
       .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
   }
 }

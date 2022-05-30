@@ -38,11 +38,23 @@ export class LoginComponent implements OnInit {
       console.log('invalid');
       return;
     }
+    let authorization: string;
     this.loginService.checkUserCredentials(this.UserLogin.value).subscribe(
       (data) => {
-        this.loginService.storeUserData(data.loginId, data.firstName);
-        this.router.navigateByUrl('/home');
-        // }
+        this.loginService.getToken().subscribe(
+          (token) => {
+            authorization = token.jwttoken;
+            this.loginService.storeUserData(
+              data.loginId,
+              data.firstName,
+              authorization
+            );
+            this.router.navigateByUrl('/home');
+          },
+          (err) => {
+            alert(err.message);
+          }
+        );
       },
       (error) => {
         if (error.message.includes('400')) {

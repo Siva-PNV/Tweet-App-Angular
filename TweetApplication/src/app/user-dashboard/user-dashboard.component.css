@@ -398,3 +398,6 @@ textarea::placeholder {
 .fa-heart::after {
   animation-fill-mode: both;
 }
+textarea {
+  border: none;
+}
