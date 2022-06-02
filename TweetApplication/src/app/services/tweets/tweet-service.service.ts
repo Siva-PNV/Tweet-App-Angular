@@ -41,11 +41,16 @@ export class TweetServiceService {
 
   public addComment(userName: string, tweetId: string, userComment: any) {
     const comment = { comment: userComment };
+    const token = this.storeToken();
     return this.http
       .post(
         `http://localhost:8080/api/v1.0/tweets/${userName}/reply/${tweetId}`,
         comment,
-        this.httpOptions1
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       )
       .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
   }
