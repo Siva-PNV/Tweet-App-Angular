@@ -130,6 +130,7 @@
                   name="tweetText"
                   [(ngModel)]="tweetText"
                   placeholder="Enter your tweet"
+                  maxlength="144"
                 ></textarea>
                 <div style="margin-left: 75%; margin-top: 10%">
                   <button
@@ -143,6 +144,7 @@
                     id="add-employee-form"
                     class="btn btn-outline-primary"
                     data-dismiss="modal"
+                    [disabled]="tweetText === ''"
                     (click)="addTweet()"
                   >
                     Tweet
@@ -190,8 +192,11 @@
                 {{ tweet.tweetDate | date: "medium" }}
               </div>
             </div>
-            <div class="tweet-content pt">
-              {{ tweet.tweetText }}
+            <div
+              class="tweet-content pt"
+              style="font-family: Helvetica; font-size: 20px"
+            >
+              <p>{{ tweet.tweetText }}</p>
             </div>
           </div>
           <div class="icons">
@@ -300,6 +305,7 @@
                             id="add-employee-form"
                             class="btn btn-outline-primary"
                             data-dismiss="modal"
+                            [disabled]="comment === ''"
                             (click)="reply()"
                           >
                             Reply

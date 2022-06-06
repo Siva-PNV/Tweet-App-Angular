@@ -375,3 +375,7 @@ a {
 .fa-thumbs-up::after {
   animation-fill-mode: initial;
 }
+textarea {
+  border: none !important;
+  resize: none;
+}

@@ -135,6 +135,8 @@ body {
   padding-left: 15%;
   margin-bottom: 20px;
   line-height: 28px;
+  border: 1px solid black;
+  size: 100%;
 }
 a {
   color: #1da2f4;
@@ -400,4 +402,5 @@ textarea::placeholder {
 }
 textarea {
   border: none;
+  resize: none;
 }
