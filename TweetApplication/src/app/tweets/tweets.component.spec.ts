@@ -1,4 +1,10 @@
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpHandler,
+} from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
 
 import { TweetsComponent } from './tweets.component';
 
@@ -8,9 +14,9 @@ describe('TweetsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TweetsComponent ]
-    })
-    .compileComponents();
+      declarations: [TweetsComponent],
+      providers: [HttpClient, FormBuilder, HttpHandler],
+    }).compileComponents();
   });
 
   beforeEach(() => {

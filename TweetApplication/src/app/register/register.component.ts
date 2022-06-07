@@ -53,11 +53,7 @@ export class RegisterComponent implements OnInit {
   UserRegister: FormGroup;
   submitted = false;
   message: string;
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private loginService: LoginService
-  ) {}
+  constructor(private fb: FormBuilder, private loginService: LoginService) {}
 
   ngOnInit(): void {
     this.UserRegister = this.fb.group(
