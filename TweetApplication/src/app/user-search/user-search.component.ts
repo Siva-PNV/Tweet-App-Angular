@@ -20,7 +20,7 @@ export class UserSearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
+    this.route.params?.subscribe((params: Params) => {
       this.userName = params['userName'];
       this.getTweetsByUserName(this.userName);
     });

@@ -1,4 +1,12 @@
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpHandler,
+} from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { UserProfileComponent } from './user-profile.component';
 
@@ -8,9 +16,10 @@ describe('UserProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserProfileComponent ]
-    })
-    .compileComponents();
+      declarations: [UserProfileComponent],
+      imports: [RouterTestingModule],
+      providers: [HttpClient, FormBuilder, HttpHandler],
+    }).compileComponents();
   });
 
   beforeEach(() => {

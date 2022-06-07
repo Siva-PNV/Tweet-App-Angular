@@ -1,4 +1,10 @@
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpHandler,
+} from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
 
 import { AllUsersComponent } from './all-users.component';
 
@@ -8,9 +14,9 @@ describe('AllUsersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AllUsersComponent ]
-    })
-    .compileComponents();
+      declarations: [AllUsersComponent],
+      providers: [HttpClient, FormBuilder, HttpHandler],
+    }).compileComponents();
   });
 
   beforeEach(() => {

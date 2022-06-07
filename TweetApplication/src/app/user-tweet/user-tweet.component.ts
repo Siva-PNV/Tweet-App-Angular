@@ -38,7 +38,7 @@ export class UserTweetComponent implements OnInit {
     this.addLikeForm = this.fb.group({
       like: [''],
     });
-    this.route.params.subscribe((params: Params) => {
+    this.route.params?.subscribe((params: Params) => {
       this.tweetId = params['tweetId'];
       this.getTweetById(this.tweetId);
     });
@@ -122,7 +122,7 @@ export class UserTweetComponent implements OnInit {
     if (loginId != null) {
       this.tweetService
         .addComment(loginId, tweetId, userComment)
-        .subscribe((data) => {
+        ?.subscribe((data) => {
           console.log(data);
           this.getTweetById(tweetId);
         });
