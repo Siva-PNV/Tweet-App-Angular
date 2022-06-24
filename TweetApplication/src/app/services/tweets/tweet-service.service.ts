@@ -6,6 +6,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class TweetServiceService {
+  baseUrl =
+    'http://tweetapp-env.eba-ih3pr6wj.us-east-1.elasticbeanstalk.com/api/v1.0/tweets';
   constructor(private http: HttpClient) {}
   httpOptions1: any;
   tokenVal =
@@ -25,40 +27,34 @@ export class TweetServiceService {
 
   public getTweetsByUserName(username: string) {
     return this.http
-      .get(`http://localhost:8080/api/v1.0/tweets/${username}`)
+      .get(this.baseUrl + `/${username}`)
       .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
   }
 
   public showMyTweets(loginId: string) {
-    return this.http.get(`http://localhost:8080/api/v1.0/tweets/${loginId}`);
+    return this.http.get(this.baseUrl + `/${loginId}`);
   }
 
   public showMyTweetsById(tweetId: string) {
-    return this.http.get(
-      `http://localhost:8080/api/v1.0/tweets/byTweetId/${tweetId}`
-    );
+    return this.http.get(this.baseUrl + `/byTweetId/${tweetId}`);
   }
 
   public addComment(userName: string, tweetId: string, userComment: any) {
     const comment = { comment: userComment };
     const token = this.storeToken();
     return this.http
-      .post(
-        `http://localhost:8080/api/v1.0/tweets/${userName}/reply/${tweetId}`,
-        comment,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      )
+      .post(this.baseUrl + `/${userName}/reply/${tweetId}`, comment, {
+        headers: {
+          Authorization: token,
+        },
+      })
       .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
   }
 
   public getAllTweets() {
     return this.http
       .get(
-        `http://localhost:8080/api/v1.0/tweets/all`,
+        this.baseUrl + `/all`,
 
         this.httpOptions1
       )
@@ -68,7 +64,7 @@ export class TweetServiceService {
   public searchUserTweet(tweetId: string) {
     return this.http
       .get(
-        `http://localhost:8080/api/v1.0/tweets/${tweetId}`,
+        this.baseUrl + `/${tweetId}`,
 
         this.httpOptions1
       )
@@ -78,7 +74,7 @@ export class TweetServiceService {
   public createTweet(userName: string, tweet: any) {
     const token = this.storeToken();
     return this.http
-      .post(`http://localhost:8080/api/v1.0/tweets/${userName}/add`, tweet, {
+      .post(this.baseUrl + `/${userName}/add`, tweet, {
         headers: {
           Authorization: token,
         },
@@ -87,15 +83,13 @@ export class TweetServiceService {
   }
 
   public getTweetLikesById(tweetId: string) {
-    return this.http.get(
-      `http://localhost:8080/api/v1.0/tweets/getLike/${tweetId}`
-    );
+    return this.http.get(this.baseUrl + `/getLike/${tweetId}`);
   }
 
   public getTweetCommentsById(tweetId: any) {
     return this.http
       .post(
-        `http://localhost:8080/api/v1.0/tweets/${tweetId.username}/add`,
+        this.baseUrl + `/${tweetId.username}/add`,
         tweetId,
         this.httpOptions1
       )
@@ -106,7 +100,7 @@ export class TweetServiceService {
     const token = this.storeToken();
     return this.http
       .put(
-        `http://localhost:8080/api/v1.0/tweets/${userName}/like/${tweetId}`,
+        this.baseUrl + `/${userName}/like/${tweetId}`,
         { responseType: 'json' },
         {
           headers: {
@@ -120,7 +114,7 @@ export class TweetServiceService {
   public updateTweet(loginId: string, tweetId: string, value: any) {
     const token = this.storeToken();
     return this.http.put(
-      `http://localhost:8080/api/v1.0/tweets/${loginId}/update/${tweetId}`,
+      this.baseUrl + `/${loginId}/update/${tweetId}`,
       value,
       {
         headers: {
@@ -132,14 +126,11 @@ export class TweetServiceService {
 
   public deleteTweet(loginId: string, tweetId: string) {
     const token = this.storeToken();
-    return this.http.delete(
-      `http://localhost:8080/api/v1.0/tweets/${loginId}/delete/${tweetId}`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
+    return this.http.delete(this.baseUrl + `/${loginId}/delete/${tweetId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
   }
 
   public storeToken() {
