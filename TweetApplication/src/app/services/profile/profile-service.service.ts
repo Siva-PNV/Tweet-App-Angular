@@ -13,6 +13,8 @@ const httpOptions1 = {
   providedIn: 'root',
 })
 export class ProfileServiceService {
+  baseUrl =
+    'http://tweetapp-env.eba-ih3pr6wj.us-east-1.elasticbeanstalk.com/api/v1.0/tweets';
   constructor(private http: HttpClient) {}
 
   public addProfile(userName: string, file: any) {
@@ -21,11 +23,7 @@ export class ProfileServiceService {
     formData.append('file', file);
 
     return this.http
-      .put(
-        `http://localhost:8080/api/v1.0/tweets/avatar`,
-        formData,
-        httpOptions1
-      )
+      .put(this.baseUrl + `/avatar`, formData, httpOptions1)
       .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
   }
 }
