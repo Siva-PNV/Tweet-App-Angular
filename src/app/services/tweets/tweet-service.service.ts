@@ -1,25 +1,26 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { map } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class TweetServiceService {
+  //baseUrl = "http://localhost:8080/api/v1.0/tweets";
   baseUrl =
-    'http://tweetapp-env.eba-ih3pr6wj.us-east-1.elasticbeanstalk.com/api/v1.0/tweets';
+    "http://tweetapp-env.eba-ih3pr6wj.us-east-1.elasticbeanstalk.com/api/v1.0/tweets";
   constructor(private http: HttpClient) {}
   httpOptions1: any;
   tokenVal =
-    localStorage.getItem('authorization') == null
-      ? ''
-      : localStorage.getItem('authorization');
+    localStorage.getItem("authorization") == null
+      ? ""
+      : localStorage.getItem("authorization");
   if(tokenVal: any) {
     this.httpOptions1 = {
       headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Allow-Headers': '',
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "",
         Authorization: tokenVal,
       }),
     };
@@ -101,7 +102,7 @@ export class TweetServiceService {
     return this.http
       .put(
         this.baseUrl + `/${userName}/like/${tweetId}`,
-        { responseType: 'json' },
+        { responseType: "json" },
         {
           headers: {
             Authorization: token,
@@ -135,14 +136,14 @@ export class TweetServiceService {
 
   public storeToken() {
     const token =
-      localStorage.getItem('authorization') == null
-        ? ''
-        : localStorage.getItem('authorization');
+      localStorage.getItem("authorization") == null
+        ? ""
+        : localStorage.getItem("authorization");
 
     if (token != null) {
       return token;
     } else {
-      return '';
+      return "";
     }
   }
 }
