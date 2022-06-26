@@ -14,8 +14,7 @@ const httpOptions1 = {
 })
 export class ProfileServiceService {
   // baseUrl = "http://localhost:8080/api/v1.0/tweets";
-  baseUrl =
-    "http://tweetapp-env.eba-ih3pr6wj.us-east-1.elasticbeanstalk.com/api/v1.0/tweets";
+  baseUrl = "http://tweets.us-east-1.elasticbeanstalk.com/api/v1.0/tweets";
   constructor(private http: HttpClient) {}
 
   public addProfile(userName: string, file: any) {
