@@ -1,4 +1,3 @@
-import { RegisterComponent } from './register/register.component';
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AddTweetComponent } from "./add-tweet/add-tweet.component";
