@@ -55,11 +55,7 @@ export class TweetServiceService {
 
   public getAllTweets() {
     return this.http
-      .get(
-        this.baseUrl + `/all`,
-
-        this.httpOptions1
-      )
+      .get(this.baseUrl + `/all`)
       .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
   }
 
