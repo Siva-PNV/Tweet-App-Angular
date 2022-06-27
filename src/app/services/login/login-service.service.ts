@@ -25,9 +25,7 @@ export class LoginService {
   public checkUserCredentials(
     loginCredentials: LoginCredentials
   ): Observable<any> {
-    return this.http
-      .post(this.baseUrl + "/login", loginCredentials, httpOptions1)
-      .pipe();
+    return this.http.post(this.baseUrl + "/login", loginCredentials).pipe();
   }
 
   public storeUserData(
