@@ -8,7 +8,7 @@ import { map } from "rxjs/operators";
 export class TweetServiceService {
   //baseUrl = "http://localhost:8080/api/v1.0/tweets";
   baseUrl =
-    "http://tweetapp-env.eba-ih3pr6wj.us-east-1.elasticbeanstalk.com/api/v1.0/tweets";
+    "http://tweetapp-env.eba-zbs7kmmp.us-west-2.elasticbeanstalk.com/api/v1.0/tweets";
   constructor(private http: HttpClient) {}
   httpOptions1: any;
   tokenVal =
