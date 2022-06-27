@@ -6,7 +6,6 @@ import { LoginCredentials } from "src/app/model/LoginCredentials";
 
 const httpOptions1 = {
   headers: new HttpHeaders({
-    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "",
   }),

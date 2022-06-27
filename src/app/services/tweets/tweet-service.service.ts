@@ -2,6 +2,12 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map } from "rxjs/operators";
 
+const httpOptions1 = {
+  headers: new HttpHeaders({
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Headers": "",
+  }),
+};
 @Injectable({
   providedIn: "root",
 })
@@ -10,21 +16,21 @@ export class TweetServiceService {
   baseUrl =
     "http://tweetapp-env.eba-zbs7kmmp.us-west-2.elasticbeanstalk.com/api/v1.0/tweets";
   constructor(private http: HttpClient) {}
-  httpOptions1: any;
-  tokenVal =
-    localStorage.getItem("authorization") == null
-      ? ""
-      : localStorage.getItem("authorization");
-  if(tokenVal: any) {
-    this.httpOptions1 = {
-      headers: new HttpHeaders({
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": "true",
-        "Access-Control-Allow-Headers": "",
-        Authorization: tokenVal,
-      }),
-    };
-  }
+  // httpOptions1: any;
+  // tokenVal =
+  //   localStorage.getItem("authorization") == null
+  //     ? ""
+  //     : localStorage.getItem("authorization");
+  // if(tokenVal: any) {
+  //   this.httpOptions1 = {
+  //     headers: new HttpHeaders({
+  //       "Access-Control-Allow-Origin": "*",
+  //       "Access-Control-Allow-Credentials": "true",
+  //       "Access-Control-Allow-Headers": "",
+  //       Authorization: tokenVal,
+  //     }),
+  //   };
+  // }
 
   public getTweetsByUserName(username: string) {
     return this.http
@@ -57,18 +63,14 @@ export class TweetServiceService {
       .get(
         this.baseUrl + `/all`,
 
-        this.httpOptions1
+        httpOptions1
       )
       .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
   }
 
   public searchUserTweet(tweetId: string) {
     return this.http
-      .get(
-        this.baseUrl + `/${tweetId}`,
-
-        this.httpOptions1
-      )
+      .get(this.baseUrl + `/${tweetId}`, httpOptions1)
       .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
   }
 
@@ -89,11 +91,7 @@ export class TweetServiceService {
 
   public getTweetCommentsById(tweetId: any) {
     return this.http
-      .post(
-        this.baseUrl + `/${tweetId.username}/add`,
-        tweetId,
-        this.httpOptions1
-      )
+      .post(this.baseUrl + `/${tweetId.username}/add`, tweetId, httpOptions1)
       .pipe(map((data1) => (data1 = JSON.parse(JSON.stringify(data1)))));
   }
 
