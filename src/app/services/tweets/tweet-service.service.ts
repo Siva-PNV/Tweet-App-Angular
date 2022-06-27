@@ -4,7 +4,6 @@ import { map } from "rxjs/operators";
 
 const httpOptions1 = {
   headers: new HttpHeaders({
-    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "",
   }),
@@ -13,7 +12,7 @@ const httpOptions1 = {
   providedIn: "root",
 })
 export class TweetServiceService {
-  //baseUrl = "http://localhost:8080/api/v1.0/tweets";
+  // baseUrl = "http://localhost:8080/api/v1.0/tweets";
   baseUrl =
     "http://tweetapp-env.eba-gymvfjnz.us-east-1.elasticbeanstalk.com/api/v1.0/tweets";
   constructor(private http: HttpClient) {}
