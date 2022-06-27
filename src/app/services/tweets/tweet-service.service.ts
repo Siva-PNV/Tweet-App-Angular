@@ -10,6 +10,7 @@ export class TweetServiceService {
   baseUrl =
     "http://tweetapp-env.eba-gymvfjnz.us-east-1.elasticbeanstalk.com/api/v1.0/tweets";
   constructor(private http: HttpClient) {}
+
   httpOptions1: any;
   tokenVal =
     localStorage.getItem("authorization") == null
