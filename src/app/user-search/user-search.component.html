@@ -44,7 +44,7 @@
             <div class="username">
               <div class="name">{{ user?.loginId }}</div>
               <div class="handle">
-                @{{ user?.firstName + "_" + user?.lastName }}
+                {{ user?.firstName + "_" + user?.lastName }}
               </div>
             </div>
           </div>
@@ -122,7 +122,7 @@
                 <div class="info" style="padding-left: 8%">
                   <div class="userinfo sl">
                     <div class="name">{{ comment.username }}</div>
-                    <div class="handle">@{{ comment.username }}</div>
+                    <div class="handle">{{ comment.username }}</div>
                   </div>
                   <i class="material-icons">keyboard_arrow_down</i>
                 </div>
