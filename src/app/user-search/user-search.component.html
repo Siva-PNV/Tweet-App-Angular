@@ -34,7 +34,7 @@
             <img
               class="avatar"
               *ngIf="user?.imageUrl == null"
-              src="assets/images/user_icon.png"
+              src="user_icon.png"
             />
             <img
               class="avatar"
@@ -59,7 +59,7 @@
               <img
                 class="avatar"
                 *ngIf="!tweet?.imageUrl"
-                src="assets/images/user_icon.png"
+                src="user_icon.png"
               />
               <img
                 class="avatar"
@@ -99,11 +99,8 @@
               <div class="content" *ngFor="let comment of tweet.comments">
                 <div class="line">
                   <div class="border"></div>
-                  <img
-                    class="avatar"
-                    *ngIf="!comment?.imageUrl"
-                    src="assets/images/user_icon.png"
-                  />
+                  <img class="avatar" *ngIf="!comment?.imageUrl"
+                  src=user_icon.png" />
                   <img
                     class="avatar"
                     *ngIf="comment?.imageUrl"
