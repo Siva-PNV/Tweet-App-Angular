@@ -375,3 +375,20 @@ a {
 .fa-thumbs-up::after {
   animation-fill-mode: initial;
 }
+
+.fa-heart:hover {
+  color: red;
+}
+
+.fa-heart {
+  color: #0a0b0c;
+}
+
+.fa-heart::after {
+  animation-fill-mode: both;
+}
+
+textarea {
+  border: none;
+  resize: none;
+}
