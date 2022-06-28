@@ -99,8 +99,11 @@
               <div class="content" *ngFor="let comment of tweet.comments">
                 <div class="line">
                   <div class="border"></div>
-                  <img class="avatar" *ngIf="!comment?.imageUrl"
-                  src=user_icon.png" />
+                  <img
+                    class="avatar"
+                    *ngIf="!comment?.imageUrl"
+                    src="user_icon.png"
+                  />
                   <img
                     class="avatar"
                     *ngIf="comment?.imageUrl"
