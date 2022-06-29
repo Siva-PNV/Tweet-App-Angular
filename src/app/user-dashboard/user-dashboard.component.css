@@ -388,6 +388,10 @@ textarea::placeholder {
   margin-right: 10%;
 }
 
+#scroll::-webkit-scrollbar {
+  width: 0px;
+}
+
 .fa-heart:hover {
   color: red;
 }
